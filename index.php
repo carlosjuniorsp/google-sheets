@@ -50,6 +50,7 @@ $values = $list->listedPlan($spreadsheetId);
           echo '<td>' . $row[0] . '</td>';
           echo '<td>' . $row[1] . '</td>';
           echo '<td>' . $row[2] . '</td>';
+          echo '<td>' . $row[3] . '</td>';
       ?>
           <tr>
             <td> </td>
