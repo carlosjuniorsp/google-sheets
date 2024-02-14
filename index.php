@@ -16,31 +16,14 @@
 
 </html>
 <?php
-
-require './Classes/Credentials.php';
-
-$credenciais = new Credentials();
-
 require __DIR__ . '/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
-$client = new \Google_Client();
-$client->setApplicationName('google sheets v1 teste');
-$client->setScopes([\Google_Service_Sheets::SPREADSHEETS]);
-$client->setAccessType('offline');
-$client->setAuthConfig($credenciais->getCredencials());
-$client->setPrompt('select_account consent');
+require './Classes/ListPlan.php';
 
-$service = new Google_Service_Sheets($client);
-
-$spreadsheetId = "1kI7waPuMCbf5ti2pSdHpTrh5ckM80hL9JRIu5yMX3AA"; //id da planilha
-
-$range = "A2:U";
-$response = $service->spreadsheets_values->get($spreadsheetId, $range);
-$values = $response->getValues();
-
-/***************************** */
-
-
+$list = new ListPlan();
+$values = $list->listedPlan();
 ?>
 
 <div class="uk-container">
@@ -63,9 +46,7 @@ $values = $response->getValues();
     </thead>
     <tbody>
       <?php
-      if (count($values) <= 0) {
-        echo '<h1>Nenhum lead cadastrado no momento</h1>';
-      } else {
+
         foreach ($values as $row) {
           echo '<td>' . $row[0] . '</td>';
           echo '<td>' . $row[1] . '</td>';
@@ -75,7 +56,7 @@ $values = $response->getValues();
             <td> </td>
           </tr>
       <?php }
-      }
+      
       ?>
     </tbody>
   </table>
