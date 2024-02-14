@@ -15,6 +15,7 @@ class Connection
         try {
             $conn = new PDO('mysql:host=localhost;dbname=' . $this->bancoDeDados, $this->username, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
         } catch (PDOException $e) {
             echo 'ERROR: ' . $e->getMessage();
         }
