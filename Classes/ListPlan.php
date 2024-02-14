@@ -4,9 +4,11 @@ require './Classes/Credentials.php';
 
 class ListPlan
 {
-    public function listedPlan()
+    public function listedPlan($spreadsheetId)
     {
+
         $credenciais = new Credentials();
+
         $client = new \Google_Client();
         $client->setApplicationName('google sheets v1 teste');
         $client->setScopes([\Google_Service_Sheets::SPREADSHEETS]);
@@ -17,7 +19,7 @@ class ListPlan
         $service = new Google_Service_Sheets($client);
     
         $range = "A2:U";
-        $response = $service->spreadsheets_values->get($_ENV['ID_PLAN'], $range);
+        $response = $service->spreadsheets_values->get($spreadsheetId, $range);
         return $response->getValues();
     }
 }

@@ -17,13 +17,12 @@
 </html>
 <?php
 require __DIR__ . '/vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
 
 require './Classes/ListPlan.php';
+$spreadsheetId = "1kI7waPuMCbf5ti2pSdHpTrh5ckM80hL9JRIu5yMX3AA"; //id da planilha
 
 $list = new ListPlan();
-$values = $list->listedPlan();
+$values = $list->listedPlan($spreadsheetId);
 ?>
 
 <div class="uk-container">

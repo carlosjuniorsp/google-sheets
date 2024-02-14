@@ -12,7 +12,8 @@ class UpdatedPlan
 
         $service = new Google_Service_Sheets($client);
         $values = [
-            ["Carlos", "11937061564", "carlos.junior@v4company.com", "Olá deu certo"],
+            ["Carlos", "11937061564", "carlos.junior@v4company.com", "Olá deu certo1"],
+
         ];
         try {
 
