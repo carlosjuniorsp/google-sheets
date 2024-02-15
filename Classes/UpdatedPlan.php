@@ -4,8 +4,6 @@ class UpdatedPlan
 {
     public function setDataPlan($spreadsheetId, $range, $valueInputOption, $credenciais)
     {
-        //Nome	Telefone	E-mail	Mensagem	utm_medium	utm_campaign	utm_term	utm_content	utm_source	utm_id	gclid
-
         $connection = new Connection();
         $db = $connection->execConnection();
 
@@ -18,7 +16,6 @@ class UpdatedPlan
                                 and wpxme.created_at 
                                 LIKE '%2024-02-14%' 
                                 and wpxmv.value is not null 
-                                LIMIT 20;
                             ");
 
         $dados = [];
@@ -31,8 +28,6 @@ class UpdatedPlan
         $utm_source = "";
         $utm_id = "";
         $gclid = "";
-
-
 
         $client = new \Google_Client();
         $client->setApplicationName('olira');
