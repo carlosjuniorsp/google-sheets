@@ -8,7 +8,7 @@ $credenciais = new Credentials();
 
 $spreadsheetId = "1kI7waPuMCbf5ti2pSdHpTrh5ckM80hL9JRIu5yMX3AA";
 $name_plan = date("d-m-Y");
-$range = "{$name_plan}!A97";
+$range = "{$name_plan}!A2";
 
 $valueInputOption = "RAW";
 

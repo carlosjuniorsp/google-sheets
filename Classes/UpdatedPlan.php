@@ -101,7 +101,7 @@ class UpdatedPlan
             ]);
 
             $result = $service->spreadsheets_values->batchUpdate($spreadsheetId, $body);
-            printf("%d cells updated.", $result->getTotalUpdatedCells());
+            printf("<h2 style='text-align:center; margin-top:100px'>Planilha Atualizada com Sucesso!!!</h2>");
             return $result;
         } catch (Exception $e) {
             echo '<pre>';
