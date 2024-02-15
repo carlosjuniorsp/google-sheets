@@ -11,11 +11,13 @@ class UpdatedPlan
                                 inner join wpxm_e_submissions AS wpxme 
                                 on wpxme.id = wpxmv.submission_id 
                                 WHERE wpxmv.key 
-                                IN('nome','message','utm_medium','utm_campaign','utm_term','utm_content','utm_source','utm_id','gclid') 
+                                IN('nome','name','message','email','telefone','utm_medium','utm_campaign','utm_term','utm_content','utm_source','utm_id','gclid') 
                                 and wpxmv.value is not null 
                             ");
         $dados = [];
         $nome = "";
+        $email = "";
+        $telefone = "";
         $message = "";
         $utm_medium = "";
         $utm_campaign = "";
@@ -36,12 +38,29 @@ class UpdatedPlan
         $contador = 1;
         try {
             while ($linha = $consult->fetch(PDO::FETCH_ASSOC)) {
-                if ($linha['key'] == 'nome' && !empty($linha['value'])) {
+                if ($linha['key'] == 'nome' || $linha['key'] == 'name' && !empty($linha['value'])) {
                     $nome = $linha['value'] == '' ? 'em branco' : $linha['value'];
                 }
 
                 if ($linha['key'] == 'message' && !empty($linha['value'])) {
                     $message = $linha['value'];
+                }
+
+                if ($linha['key'] == 'email' && !empty($linha['value'])) {
+                    if (filter_var($linha['value'], FILTER_VALIDATE_EMAIL)) {
+                        $email = $linha['value'];
+                    }
+                }
+
+                //Existe a validação pois o campo do formulário da olyra estava errado antes da criação do projeto
+                if ($linha['key'] == 'email' && !empty($linha['value'])) {
+                    if (is_numeric($linha['value'])) {
+                        $telefone = $linha['value'];
+                    }
+                }
+
+                if ($linha['key'] == 'telefone' && !empty($linha['value'])) {
+                    $telefone = $linha['value'];
                 }
 
                 if ($linha['key'] == 'utm_medium' && !empty($linha['value'])) {
@@ -76,6 +95,8 @@ class UpdatedPlan
                     $dados[$contador / 8 - 1] = [
                         $linha['created_at'],
                         $nome == '' ? 'Não Preenchido' : $nome,
+                        $email == '' ? 'Não Preenchido' : $email,
+                        $telefone == '' ? 'Não Preenchido' : $telefone,
                         $message == '' ? 'Não Preenchido' : $message,
                         $utm_medium == '' ? 'Não Preenchido' : $utm_medium,
                         $utm_campaign == '' ? 'Não Preenchido' : $utm_campaign,
