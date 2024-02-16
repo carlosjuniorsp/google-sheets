@@ -6,13 +6,8 @@ class UpdatedPlan
     {
         $connection = new Connection();
         $db = $connection->execConnection();
-        $consult = $db->query("SELECT wpxmv.id,wpxmv.key,wpxmv.value, wpxme.created_at FROM
-                                wpxm_e_submissions_values AS wpxmv 
-                                inner join wpxm_e_submissions AS wpxme 
-                                on wpxme.id = wpxmv.submission_id 
-                                WHERE wpxmv.key 
-                                IN('nome','name','message','email','telefone','utm_medium','utm_campaign','utm_term','utm_content','utm_source','utm_id','gclid') 
-                                and wpxmv.value is not null 
+        $consult = $db->query("
+           SELECT wpxmv.submission_id, wpxmv.key,wpxmv.value, wpxme.created_at FROM wpxm_e_submissions_values AS wpxmv inner join wpxm_e_submissions AS wpxme on wpxme.id = wpxmv.submission_id WHERE wpxmv.key IN('nome','message','email','telefone','utm_medium','utm_campaign','utm_term','utm_content','utm_source','utm_id','gclid') and wpxmv.value is not null and wpxme.created_at >= '2024-02-16 15:00' ORDER BY wpxmv.submission_id;
                             ");
         $dados = [];
         $nome = "";
@@ -35,11 +30,12 @@ class UpdatedPlan
         $client->setPrompt('select_account consent');
 
         $service = new Google_Service_Sheets($client);
-        $contador = 1;
+        $contador = 0;
+        $identifica_linha = 1;
         try {
             while ($linha = $consult->fetch(PDO::FETCH_ASSOC)) {
                 if ($linha['key'] == 'nome' || $linha['key'] == 'name' && !empty($linha['value'])) {
-                    $nome = $linha['value'] == '' ? 'em branco' : $linha['value'];
+                    $nome = $linha['value'] == '';
                 }
 
                 if ($linha['key'] == 'message' && !empty($linha['value'])) {
@@ -91,8 +87,8 @@ class UpdatedPlan
                     $gclid = $linha['value'];
                 }
 
-                if ($contador % 8 == 0) {
-                    $dados[$contador / 8 - 1] = [
+                if ($identifica_linha == 11) {
+                    $dados[$contador] = [
                         $linha['created_at'],
                         $nome == '' ? 'Não Preenchido' : $nome,
                         $email == '' ? 'Não Preenchido' : $email,
@@ -106,9 +102,23 @@ class UpdatedPlan
                         $utm_id == '' ? 'Não Preenchido' : $utm_id,
                         $gclid == '' ? 'Não Preenchido' : $gclid
                     ];
+                    $nome = "";
+                    $email = "";
+                    $telefone = "";
+                    $message = "";
+                    $utm_medium = "";
+                    $utm_campaign = "";
+                    $utm_term = "";
+                    $utm_content = "";
+                    $utm_source = "";
+                    $utm_id = "";
+                    $gclid = "";
+                    $identifica_linha = 0;
+                    $contador++;
                 }
-                $contador++;
+                $identifica_linha++;
             }
+
 
             $values = $dados;
             $data[] = new Google_Service_Sheets_ValueRange([
