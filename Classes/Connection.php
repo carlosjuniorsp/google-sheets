@@ -5,7 +5,7 @@
 
 class Connection
 {
-    private $bancoDeDados = "olyra";
+    private $bancoDeDados = "olyrac11_wp207";
     private $username = "root";
     private $password = "";
 
