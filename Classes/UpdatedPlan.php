@@ -127,6 +127,7 @@ class UpdatedPlan
                 }
             }
 
+
             $values = $dados;
 
             $data[] = new Google_Service_Sheets_ValueRange([
