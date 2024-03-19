@@ -6,7 +6,6 @@ class Credentials
     {
 
         $credenciais = [
-           
         ];
 
         return $credenciais;
